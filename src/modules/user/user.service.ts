@@ -19,19 +19,20 @@ export class UserService {
   }
 
   async createNewUser(dto: createUserDTO) {
-
-    try{
+    try {
       const validatPassword = await this.hashPassword(dto.password);
-    dto.password = validatPassword;
-    await this.userRepository.save({
-      name: dto.name,
-      email: dto.email,
-      password: dto.password,
-    });
-    return dto;
-    }catch(error){
-      return new BadRequestException('The user has not registered', { cause: new Error(), description: 'The user has not registered'})
+      dto.password = validatPassword;
+      await this.userRepository.save({
+        name: dto.name,
+        email: dto.email,
+        password: dto.password,
+      });
+      return dto;
+    } catch (error) {
+      return new BadRequestException('The user has not registered', {
+        cause: new Error(),
+        description: 'The user has not registered',
+      });
     }
-    
   }
 }

@@ -53,6 +53,4 @@ export class TaskListController {
   DeleteTaskList(@Param('id') id: number) {
     return this.taskListService.deleteTaskListAllList(id);
   }
-
-
 }

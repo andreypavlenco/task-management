@@ -9,9 +9,10 @@ import { TaskItemModule } from '../taskItem/taskItem.module';
 
 @Module({
   imports: [
-  TypeOrmModule.forFeature([TaskList, TaskItem, User]), TaskItemModule],
- controllers: [TaskListController],
- providers: [TaskListService],
-
+    TypeOrmModule.forFeature([TaskList, TaskItem, User]),
+    TaskItemModule,
+  ],
+  controllers: [TaskListController],
+  providers: [TaskListService],
 })
 export class TaskListModule {}

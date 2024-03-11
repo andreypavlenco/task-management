@@ -9,7 +9,7 @@ export class TokenService {
     private readonly confService: ConfigService,
   ) {}
 
-  async tokenJWT(email:string, id:number) {
+  async tokenJWT(email: string, id: number) {
     const payload = { email, id };
     return await this.jwtService.sign(payload, {
       secret: this.confService.get('jwt_secret'),

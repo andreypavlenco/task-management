@@ -1,6 +1,5 @@
 import { UserService } from './user.service';
 
-
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
