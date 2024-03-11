@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import {
   Column,
   Entity,
@@ -18,11 +18,11 @@ export class User {
   @Column()
   name: string;
 
-  @IsString()
+  @IsEmail()
   @Column()
   email: string;
 
-  @IsString()
+  @IsNotEmpty()
   @Column({ select: false })
   password: string;
 

@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskList } from 'src/models/taskList.entity';
 import { User } from 'src/models/user.entity';
@@ -17,6 +17,7 @@ export class TaskListService {
   async createTaskList(dto: createTaskListDTO, userId: number) {
     const taskList = new TaskList();
     taskList.name = dto.name;
+    try{
     taskList.taskItem = await this.taskItemService.createTaskItem(
       dto.taskItems,
     );
@@ -26,9 +27,13 @@ export class TaskListService {
     })),
       await this.taskListRepository.save(taskList);
     return taskList;
+  }catch(error){
+  return new BadRequestException('Error save Task')
+  }
   }
 
   async findAllTaskList(userId: number) {
+    try{
     const userAllList = await this.userRepository.findOne({
       relations: { taskList: { taskItem: true } },
       where: { id: userId },
@@ -37,12 +42,18 @@ export class TaskListService {
     if (userAllList) {
       return userAllList.taskList;
     } else {
-      return [];
+      throw  new BadRequestException('Not Task List');
     }
+    }catch(error){
+      throw  new BadRequestException('Not Task List', error);
+    }
+
+     
   }
 
   async findOneTaskList(userId: number, taskListId: number) {
-    const taskOneList = await this.userRepository.findOne({
+    try{
+  const taskOneList = await this.userRepository.findOne({
       select:{name:true,email:true, id:true},
       relations: { taskList: { taskItem: true } },
       where: { id: userId, taskList: { taskItem: { id: taskListId } } },
@@ -51,34 +62,41 @@ export class TaskListService {
     if (taskOneList) {
       return taskOneList.taskList;
     } else {
-    
-      return [];
+      throw new BadRequestException('Not Task List');
     }
+    }catch(error){
+      throw new BadRequestException('Not Task List', error);
+    }
+    
+    
   }
 
   async updateTaskList(id: number, updateName: string) {
-    return await this.taskListRepository.update({ id }, { name: updateName });
+    try{
+       return await this.taskListRepository.update({ id },{ name: updateName });
+    }catch(erro){
+      throw new BadRequestException('Not update Task List')
+    }
+
   }
 
   
-  async deleteTaskListAllItems(idTaskList: number) {
+  async deleteTaskListAllItems(taskListId: number) {
     try {
-    const taskList =  await this.taskListRepository.findOne({where:{id: idTaskList}})
-    
-        
-      return await this.taskItemService.deleteTaskItems(taskList);
+    const taskList =  await this.taskListRepository.findOne({where:{id: taskListId}})
+    return await this.taskItemService.deleteTaskItems(taskList);
     } catch (error) {
-      return error;
+     throw new BadRequestException('Not Delete Task List all tasks', error);
     }
   }
 
-  async deleteTaskListAllList(idTaskList: number) {
+  async deleteTaskListAllList(taskListId: number) {
     try {
-    const taskList =  await this.taskListRepository.findOne({where:{id: idTaskList}})
+    const taskList =  await this.taskListRepository.findOne({where:{id: taskListId}})
          await this.taskItemService.deleteTaskItems(taskList);
-         return await this.taskListRepository.delete(idTaskList)
+         return await this.taskListRepository.delete(taskListId)
     } catch (error) {
-      return error;
+      throw new BadRequestException('Not Delete Task List all list', error);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskItem } from 'src/models/taskItem.entity';
 import { Repository } from 'typeorm';
@@ -18,8 +18,8 @@ export class TaskItemService {
   async forEachDescription(description: string) {
     const taskItem = new TaskItem();
     taskItem.description = description;
-    await this.taskItemRepository.save(taskItem);
-    return taskItem;
+       await this.taskItemRepository.save(taskItem);
+      return taskItem;
   }
 
   async forEachDeleteDescription(findTaskItem) {
@@ -29,15 +29,22 @@ export class TaskItemService {
   }
 
   async createTaskItem(taskItems: string[]) {
+
+    try{
     const promisTaskItem = taskItems.map((description) =>
       this.forEachDescription(description),
     );
     const taskItem = await Promise.all(promisTaskItem);
     return taskItem;
+    }catch(error){
+      throw new BadRequestException('Not save task ', error)
+    }
+
   }
 
   async updateTaskItem(listId: number, itemId: number, updateDescription: string, userId: number) {
-       await this.taskItemRepository.update( itemId, {description: updateDescription})
+    try{
+            await this.taskItemRepository.update( itemId, {description: updateDescription})
       return await this.userRepository.findOne({
             select:  ["id", "name", "email"],
            relations: { taskList: { taskItem: true } },
@@ -45,6 +52,10 @@ export class TaskItemService {
          
     });
 
+    }catch(error){
+      throw new BadRequestException('Not update task ', error)
+    }
+ 
 }
  
      async deleteTaskItems(idTaskList) {
@@ -52,7 +63,7 @@ export class TaskItemService {
         const findTaskItem =  await this.taskItemRepository.find({where:{taskList: idTaskList}})
        return await this.forEachDeleteDescription(findTaskItem)
      } catch (error) {
-       return error;
+      throw new BadRequestException('Not Delete tasks ', error)
      }
   }
 
@@ -61,7 +72,7 @@ export class TaskItemService {
     try {
     return await this.taskItemRepository.delete(idTaskItem)
     } catch (error) {
-      return error;
+     throw new BadRequestException('Not Delete task ', error)
     }
  }
 

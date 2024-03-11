@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { UserController } from './user.controller';
+
 
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
@@ -10,7 +10,7 @@ import { PassportMiddleware } from 'src/ passport.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  controllers: [UserController],
+  controllers: [],
   providers: [UserService, JwtStrategy],
   exports: [UserService],
 })

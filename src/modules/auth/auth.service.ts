@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { TokenService } from '../token/token.service';
 import { authLoginDTO } from './dto';
 import { createUserDTO } from '../user/dto';
+import { User } from 'src/models/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
     return dto;
   }
 
-  async login(dto: authLoginDTO) {
+  async login(dto: authLoginDTO){
     const findEmailUser = await this.userService.findOneUserEmail(dto.email);
     if (!findEmailUser)
       throw new BadRequestException('The user already exists');
