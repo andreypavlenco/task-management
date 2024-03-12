@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskItem } from 'src/models/taskItem.entity';
 import { Repository } from 'typeorm';
-
 import { User } from 'src/models/user.entity';
 
 @Injectable()
@@ -28,9 +27,7 @@ export class TaskItemService {
 
   async createTaskItem(taskItems: string[]) {
     try {
-      const promisTaskItem = taskItems.map((description) =>
-        this.forEachDescription(description),
-      );
+      const promisTaskItem = taskItems.map((description) => this.forEachDescription(description));
       const taskItem = await Promise.all(promisTaskItem);
       return taskItem;
     } catch (error) {
@@ -38,12 +35,7 @@ export class TaskItemService {
     }
   }
 
-  async updateTaskItem(
-    listId: number,
-    itemId: number,
-    updateDescription: string,
-    userId: number,
-  ) {
+  async updateTaskItem(listId: number, itemId: number, updateDescription: string, userId: number) {
     try {
       await this.taskItemRepository.update(itemId, {
         description: updateDescription,

@@ -8,10 +8,7 @@ import { User } from 'src/models/user.entity';
 import { TaskItemModule } from '../taskItem/taskItem.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([TaskList, TaskItem, User]),
-    TaskItemModule,
-  ],
+  imports: [TypeOrmModule.forFeature([TaskList, TaskItem, User]), TaskItemModule],
   controllers: [TaskListController],
   providers: [TaskListService],
 })

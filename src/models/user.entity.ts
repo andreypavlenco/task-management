@@ -1,46 +1,31 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { IsNumber, IsString } from 'class-validator';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TaskList } from './taskList.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user')
 export class User {
-
-  @ApiProperty({type :Number})
+  @ApiProperty({ type: Number })
   @IsNumber()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({type :String})
+  @ApiProperty({ type: String })
   @IsString()
   @Column()
   name: string;
 
-<<<<<<< HEAD
-  @IsEmail()
-  @Column()
-  email: string;
-
-  @IsNotEmpty()
-=======
-  @ApiProperty({type :String})
+  @ApiProperty({ type: String })
   @IsString()
   @Column()
   email: string;
 
-  @ApiProperty({type :String})
+  @ApiProperty({ type: String })
   @IsString()
->>>>>>> swagger
   @Column({ select: false })
   password: string;
 
-  @ApiProperty({type: () => [TaskList]})
+  @ApiProperty({ type: () => [TaskList] })
   @OneToMany(() => TaskList, (taskList) => taskList.user)
   @JoinColumn({ name: 'user_id' })
   taskList: TaskList[];

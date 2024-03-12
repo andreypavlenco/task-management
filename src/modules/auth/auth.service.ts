@@ -22,18 +22,10 @@ export class AuthService {
 
   async login(dto: authLoginDTO) {
     const findEmailUser = await this.userService.findOneUserEmail(dto.email);
-    if (!findEmailUser)
-      throw new BadRequestException('The user already exists');
-    const passwordCompare = bcrypt.compare(
-      dto.password,
-      findEmailUser.password,
-    );
-    if (!passwordCompare)
-      throw new BadRequestException('The date already exists');
-    const token = await this.tokenService.tokenJWT(
-      findEmailUser.email,
-      findEmailUser.id,
-    );
+    if (!findEmailUser) throw new BadRequestException('The user already exists');
+    const passwordCompare = bcrypt.compare(dto.password, findEmailUser.password);
+    if (!passwordCompare) throw new BadRequestException('The date already exists');
+    const token = await this.tokenService.tokenJWT(findEmailUser.email, findEmailUser.id);
     return { dto, token };
   }
 }

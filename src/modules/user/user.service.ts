@@ -4,11 +4,10 @@ import { User } from 'src/models/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { createUserDTO } from './dto';
+
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
   async findOneUserEmail(email: string) {
     return await this.userRepository.findOne({ where: { email: email } });

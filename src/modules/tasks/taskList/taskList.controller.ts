@@ -1,27 +1,14 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
-
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { TaskListService } from './taskList.service';
 import { createTaskListDTO } from './dto';
-import { ApiBody, ApiCreatedResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { TaskList } from 'src/models/taskList.entity';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
 
 @Controller('task')
 export class TaskListController {
   constructor(private readonly taskListService: TaskListService) {}
 
-
-  @ApiBody({type:createTaskListDTO})
+  @ApiBody({ type: createTaskListDTO })
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createTaskList(@Body() dto: createTaskListDTO, @Req() res) {
@@ -33,10 +20,10 @@ export class TaskListController {
   findTaskList(@Req() res) {
     return this.taskListService.findAllTaskList(res.user.id);
   }
- 
+
   @ApiParam({
     name: 'taskListId',
-    type: Number
+    type: Number,
   })
   @UseGuards(JwtAuthGuard)
   @Get('find-one-list/:id')
@@ -46,7 +33,7 @@ export class TaskListController {
 
   @ApiParam({
     name: 'id',
-    type: Number
+    type: Number,
   })
   @UseGuards(JwtAuthGuard)
   @Patch('updateList/:id')
@@ -56,7 +43,7 @@ export class TaskListController {
 
   @ApiParam({
     name: 'id',
-    type: Number
+    type: Number,
   })
   @UseGuards(JwtAuthGuard)
   @Delete('deleteList/:id')
@@ -66,7 +53,7 @@ export class TaskListController {
 
   @ApiParam({
     name: 'id',
-    type: Number
+    type: Number,
   })
   @UseGuards(JwtAuthGuard)
   @Delete('deleteList/:id')

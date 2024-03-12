@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskList } from 'src/models/taskList.entity';
+import { TaskItemService } from '../taskItem/taskItem.service';
 import { User } from 'src/models/user.entity';
 import { Repository } from 'typeorm';
-import { TaskItemService } from '../taskItem/taskItem.service';
 import { createTaskListDTO } from './dto';
 
 @Injectable()
@@ -19,9 +19,7 @@ export class TaskListService {
     const taskList = new TaskList();
     taskList.name = dto.name;
     try {
-      taskList.taskItem = await this.taskItemService.createTaskItem(
-        dto.taskItems,
-      );
+      taskList.taskItem = await this.taskItemService.createTaskItem(dto.taskItems);
       (taskList.user = await this.userRepository.findOne({
         select: { id: true, name: true },
         where: { id: userId },
