@@ -23,7 +23,6 @@ export class TaskItemController {
     @Req() req,
     @Body('descrition') descrition: string,
   ) {
-    console.log(listId, itemId, descrition);
     return this.taskItemService.updateTaskItem(listId, itemId, descrition, req.user.id);
   }
 
