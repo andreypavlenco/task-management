@@ -5,7 +5,7 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -14,26 +14,20 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'prettier/prettier': 'error',
-    'import/order': [
-      'error',
-      {
-        'groups': ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
-        'pathGroups': [
-          {
-            'pattern': '@nestjs/**',
-            'group': 'external',
-            'position': 'before'
-          }
-        ],
-        'pathGroupsExcludedImportTypes': [],
-        'newlines-between': 'always',
-        'alphabetize': {
-          'order': 'asc',
-          'caseInsensitive': true
-        }
-      }
-    ]
+    
+  //   "sort-imports": ["error", {
+  //     "ignoreCase": false,
+  //     "ignoreDeclarationSort": false,
+  //     "ignoreMemberSort": false,
+  //     "memberSyntaxSortOrder": [ 'single', 'all', 'multiple', 'none'],
+  //     "allowSeparatedGroups": true
+  // }]
+    
+
+
   },
+
+  
   env: {
     node: true,
     jest: true,
